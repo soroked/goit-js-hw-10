@@ -16,39 +16,39 @@ const refs = {
 }
 
 // initial condition
-toggleElement(refs.select); // 'none'
-toggleElement(refs.error); // 'none'
+hideElement(refs.select); // 'none'
+hideElement(refs.error); // 'none'
 
 // first query
 fetchBreeds().then(arr => {
 
 	renderSelectMarkup(arr, refs.select);
 
-	toggleElement(refs.select); // 'block'
-	toggleElement(refs.loader); // 'none'
+	showElement(refs.select); // 'block'
+	hideElement(refs.loader); // 'none'
 
 	refs.select.addEventListener('change', () => {
 		
-		if(refs.error.style.display === 'block') toggleElement(refs.error); // 'none'
-		toggleElement(refs.catInfo); // 'none'
-		toggleElement(refs.loader); // 'block'
+		hideElement(refs.error); // 'none'
+		hideElement(refs.catInfo); // 'none'
+		showElement(refs.loader); // 'block'
 
 		const breed_ids = refs.select.value;
 		fetchCatByBreed(breed_ids).then(res => {
 
-			toggleElement(refs.loader); // 'none'
-			toggleElement(refs.catInfo); // 'block'
+			hideElement(refs.loader); // 'none'
+			showElement(refs.catInfo); // 'block'
 
 			renderCat(res, refs.catInfo);
 		}).catch(error => {
-			toggleElement(refs.loader); // 'none'
-			toggleElement(refs.error); // 'block'
+			hideElement(refs.loader); // 'none'
+			showElement(refs.error); // 'block'
 			Notify.failure(`${error}`);
 		});
 	});
 }).catch(error => {
-	toggleElement(refs.loader); // 'none'
-	toggleElement(refs.error); // 'block'
+	hideElement(refs.loader); // 'none'
+	showElement(refs.error); // 'block'
 	Notify.failure(`${error}`);
 });
 
@@ -59,14 +59,23 @@ function renderSelectMarkup(arr, container) {
 }
 
 function renderCat(cat, container) {
-	container.innerHTML = `<img src="${cat[0].url}" width="100%">
-	<h1 style="margin:0">${cat[0].breeds[0].name}</h1>
+	container.innerHTML = `<img src="${cat[0].url}" width="50%"
+    style="float:left; padding:10px; object-fit:contain">
+	<h1>${cat[0].breeds[0].name}</h1>
 	<p>${cat[0].breeds[0].description}</p>
 	<p><strong>Temperament: </strong>${cat[0].breeds[0].temperament}</p>`
 }
 
-function toggleElement(element) {
-	element.style.display = element.style.display === 'none'
-		? 'block'
-		: 'none';
+// function toggleElement(element) {
+// 	element.style.display = element.style.display === 'none'
+// 		? 'block'
+// 		: 'none';
+// }
+
+function showElement(element) {
+	element.style.display = 'block';
+}
+
+function hideElement(element) {
+	element.style.display = 'none';
 }
