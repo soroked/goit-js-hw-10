@@ -1,11 +1,7 @@
-// 1. чи потрібно розбивати в цьому випадку тогл на дві функції: добавити та забрати клас, стиль?
-// 2. чи є сенс винести колбеки then в окремі фенкції?
-// 3. чи потрібно в cat-api.js в then викидати помилку?
-// 4. чому в тулзах при виборі кота не покахує запроси на сервер?
-// 5. як без релоаду сторінки зімітувати помилку запиту?
+// 1. як без релоаду сторінки зімітувати помилку запиту? --disable-hmr
+// 2. елементи приховую через інлайн стилі display none та показую через display block. все прописано у функціях showElement та hideElement нижче. це ок?
 
-import { fetchBreeds, fetchCatByBreed } from './cat-api.js'
-import {SlimSelect} from 'slim-select' 
+import { fetchBreeds, fetchCatByBreed } from './js/cat-api.js'
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const refs = {
@@ -14,10 +10,6 @@ const refs = {
 	loader: document.querySelector('.loader'),
 	error: document.querySelector('.error'),
 }
-
-// initial condition
-hideElement(refs.select); // 'none'
-hideElement(refs.error); // 'none'
 
 // first query
 fetchBreeds().then(arr => {
@@ -40,16 +32,16 @@ fetchBreeds().then(arr => {
 			showElement(refs.catInfo); // 'block'
 
 			renderCat(res, refs.catInfo);
-		}).catch(error => {
+		}).catch(() => {
 			hideElement(refs.loader); // 'none'
 			showElement(refs.error); // 'block'
-			Notify.failure(`${error}`);
+			Notify.failure(`Oops! Something went wrong! Try reloading the page!`);
 		});
 	});
-}).catch(error => {
+}).catch(() => {
 	hideElement(refs.loader); // 'none'
 	showElement(refs.error); // 'block'
-	Notify.failure(`${error}`);
+	Notify.failure(`Oops! Something went wrong! Try reloading the page!`);
 });
 
 function renderSelectMarkup(arr, container) {
