@@ -1,7 +1,3 @@
-// 1. як без релоаду сторінки зімітувати помилку запиту? --disable-hmr
-// 2. елементи приховую через інлайн стилі display none та показую через display block. все прописано у функціях showElement та hideElement нижче. це ок?
-// 3. куди добавити SimpleSelect щоб він працював?
-
 //  .is-hidden {
 //   position: absolute;
 //   width: 1px;
@@ -44,7 +40,7 @@ fetchBreeds().then(arr => {
 	})
 
 	refs.select.addEventListener('change', handleCatSearch);
-	
+
 }).catch(() => {
 	refs.loader.classList.add('is-hidden');
 	refs.error.classList.remove('is-hidden');
